@@ -1,0 +1,47 @@
+.header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  grid-area: h;
+  background-color: $y;
+  height: 65px;
+  padding: 0 15px;
+
+  .container {
+    height: 100%;
+  }
+
+  &-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+
+    &__brand {
+      img {
+        height: 26px;
+      }
+    }
+
+    &__buttons {
+      height: 100%;
+      a {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        color: $g;
+        font-size: 14px;
+        text-decoration: none;
+        background-color: $y;
+        transition: all 0.3s;
+        padding: 0 5px;
+        margin-left: 5px;
+
+        &:hover {
+          background-color: $yh;
+        }
+      }
+    }
+  }
+}
