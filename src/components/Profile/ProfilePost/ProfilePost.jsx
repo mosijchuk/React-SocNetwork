@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialIcon, { colorPalette } from "material-icons-react";
-import s from "./scss/profilePost.module.scss";
+import s from "./profilePost.module.scss";
 
 const ProfilePost = () => {
   return (

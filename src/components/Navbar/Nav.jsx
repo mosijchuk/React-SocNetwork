@@ -1,6 +1,6 @@
 import React from "react";
 import MaterialIcon, { colorPalette } from "material-icons-react";
-import s from "./scss/nav.module.scss";
+import s from "./nav.module.scss";
 
 const Nav = () => {
   return (

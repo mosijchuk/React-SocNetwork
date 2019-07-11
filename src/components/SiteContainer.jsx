@@ -1,6 +1,6 @@
 import React from "react";
-import Nav from "./Nav";
-import Profile from "./Profile";
+import Nav from "./Navbar/Nav";
+import Profile from "./Profile/Profile";
 import s from "./scss/components.module.scss";
 
 const SiteContainer = () => {

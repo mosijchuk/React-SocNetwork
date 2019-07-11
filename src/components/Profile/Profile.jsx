@@ -1,6 +1,7 @@
 import React from "react";
-import ProfilePost from "./ProfilePost";
-import s from "./scss/profile.module.scss";
+import ProfilePost from "./ProfilePost/ProfilePost";
+import s from "./profile.module.scss";
+import ProfilePostForm from "./ProfilePostForm/ProfilePostForm";
 
 const Profile = () => {
   return (
@@ -42,25 +43,8 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className={s.contentArea}>
-        <div className={s.contentArea_wrap}>
-          <form action="#">
-            <div className={s.form_group}>
-              <textarea
-                name="post_text"
-                id="postText"
-                cols="30"
-                rows="10"
-                placeholder="Your news..."
-                required
-              />
-            </div>
-            <button type="submit" className={s.btn_b}>
-              Post
-            </button>
-          </form>
-        </div>
-      </div>
+
+      <ProfilePostForm />
 
       <ProfilePost />
       <ProfilePost />
