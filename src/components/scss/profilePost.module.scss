@@ -1,0 +1,65 @@
+@import "./components.module.scss";
+
+.post_wrap {
+  padding: 15px;
+}
+
+.post_head {
+  display: flex;
+  align-items: center;
+
+  a.post_avatar {
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 100px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+  }
+
+  .post_owner {
+    display: flex;
+    flex-direction: column;
+    a {
+      font-size: 16px;
+      color: $y;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  span.post_date {
+    font-size: 12px;
+    color: $gt;
+  }
+}
+
+.post_footer {
+  display: flex;
+  align-items: center;
+  a {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    text-decoration: none;
+    i {
+      color: $y !important;
+      transition: all 0.3s;
+      margin-right: 5px;
+    }
+
+    p {
+      color: $y;
+      font-size: 14px;
+    }
+
+    &:hover {
+      i {
+        color: $yh !important;
+      }
+    }
+  }
+}

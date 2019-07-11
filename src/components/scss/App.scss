@@ -1,14 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
-@import "components";
-@import "_nav";
-@import "_header";
-@import "_profile";
+@import "./components.module.scss";
 
 body {
   background-color: $g;
   font-family: "Montserrat", sans-serif;
 }
 
-.app-wrapper {
+.app_wrapper {
   padding-top: 65px;
 }

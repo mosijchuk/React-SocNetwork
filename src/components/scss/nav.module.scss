@@ -1,3 +1,5 @@
+@import "./components.module.scss";
+
 .nav {
   grid-area: n;
   background-color: transparent;
@@ -5,7 +7,7 @@
   top: 75px;
   width: 150px;
 
-  &-item {
+  &_item {
     padding: 5px;
     transition: all 0.3s;
     border-radius: 3px;
