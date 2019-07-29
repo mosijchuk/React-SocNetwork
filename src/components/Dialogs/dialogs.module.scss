@@ -1,0 +1,66 @@
+@import "./../scss/components.module.scss";
+
+.dialogsList {
+  position: relative;
+}
+
+.dialogs {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  grid-gap: 15px;
+  height: 90vh;
+
+  .dialogsList {
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .dialogArea {
+    overflow: scroll;
+    height: 93%;
+
+    .postMessage {
+      position: absolute;
+      bottom: 0;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: $g;
+
+      form {
+        display: flex;
+        align-items: center;
+
+        input {
+          border: 1px solid $g;
+          border-radius: 5px;
+          font-size: 14px;
+          padding: 10px;
+          outline: none;
+          width: 100%;
+          box-sizing: border-box;
+          margin: 0 10px;
+        }
+
+        button {
+          background-color: transparent;
+          border: none;
+          outline: none;
+          cursor: pointer;
+          transition: all 0.3s;
+
+          i {
+            color: $y;
+          }
+
+          &:hover {
+            i {
+              color: $yh;
+            }
+          }
+        }
+      }
+    }
+  }
+}

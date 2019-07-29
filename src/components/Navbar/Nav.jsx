@@ -1,30 +1,44 @@
 import React from "react";
 import MaterialIcon, { colorPalette } from "material-icons-react";
-import s from "./nav.module.scss";
+import s from "./Nav.module.scss";
+import { NavLink } from "react-router-dom";
+import NavFriends from "./NavFriends/NavFriends";
 
-const Nav = () => {
+const Nav = props => {
   return (
     <nav className={s.nav}>
       <div className={s.nav_item}>
         <MaterialIcon icon="person" size={18} />
-        <a href="#Profile">Profile</a>
+        <NavLink to="/profile" activeClassName={s.active}>
+          Profile
+        </NavLink>
       </div>
       <div className={s.nav_item}>
         <MaterialIcon icon="mail" size={18} />
-        <a href="#Messages">Messages</a>
+        <NavLink to="/dialogs" activeClassName={s.active}>
+          Messages
+        </NavLink>
       </div>
       <div className={s.nav_item}>
         <MaterialIcon icon="filter_none" size={18} />
-        <a href="#News">News</a>
+        <NavLink to="/news" activeClassName={s.active}>
+          News
+        </NavLink>
       </div>
       <div className={s.nav_item}>
         <MaterialIcon icon="music_note" size={18} />
-        <a href="#Music">Music</a>
+        <NavLink to="/music" activeClassName={s.active}>
+          Music
+        </NavLink>
       </div>
       <div className={s.nav_item}>
         <MaterialIcon icon="settings" size={18} />
-        <a href="#Settings">Settings</a>
+        <NavLink to="/settings" activeClassName={s.active}>
+          Settings
+        </NavLink>
       </div>
+
+      <NavFriends state={props.state.navFriends} />
     </nav>
   );
 };

@@ -1,0 +1,34 @@
+@import "./../../../scss/components.module.scss";
+
+.item {
+  padding: 5px;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    transition: all 0.3s;
+
+    img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    p {
+      color: $y;
+      font-size: 12px;
+      transition: all 0.3s;
+      margin-top: 5px;
+      margin-bottom: 0;
+    }
+
+    &:hover {
+      a p {
+        color: $yh;
+      }
+    }
+  }
+}

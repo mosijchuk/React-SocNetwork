@@ -1,0 +1,59 @@
+@import "./../../scss/components.module.scss";
+
+.messageWrap {
+  position: relative;
+}
+
+.message {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 15px 20px;
+  border-radius: 5px;
+  margin: 1px;
+
+  &.selected {
+    background-color: $yl;
+  }
+
+  .avatar {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .messageText {
+    position: relative;
+    width: max-content;
+    max-width: 50%;
+    border: 1px solid $g;
+    border-radius: 10px;
+    background-color: $w;
+    padding: 10px;
+    color: $b;
+    font-size: 14px;
+    padding-right: 40px;
+
+    .date {
+      color: $y;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 10px;
+    }
+  }
+
+  &.owner {
+    flex-direction: row-reverse;
+
+    .avatar {
+      margin-left: 10px;
+    }
+
+    .messageText {
+      background-color: rgba(225, 229, 235, 0.46);
+    }
+  }
+}

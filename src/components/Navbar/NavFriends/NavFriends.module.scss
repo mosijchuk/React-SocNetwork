@@ -1,0 +1,68 @@
+@import "./../../scss/components.module.scss";
+
+.NavFriendsBlock {
+  margin-top: 40px;
+  background-color: $w;
+  border: 1px solid $gline;
+  border-radius: 5px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid $gline;
+  border-radius: 5px;
+  margin-bottom: 5px;
+
+  i {
+    margin-right: 10px;
+    color: #285473 !important;
+  }
+
+  h4 {
+    font-size: 14px;
+    color: #285473;
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+.FriendsWrap {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  .item {
+    padding: 5px;
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-decoration: none;
+      transition: all 0.3s;
+
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      p {
+        color: $y;
+        font-size: 12px;
+        transition: all 0.3s;
+        margin-top: 5px;
+        margin-bottom: 0;
+      }
+
+      &:hover {
+        a p {
+          color: $yh;
+        }
+      }
+    }
+  }
+}

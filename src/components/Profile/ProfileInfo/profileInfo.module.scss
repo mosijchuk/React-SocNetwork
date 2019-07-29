@@ -1,0 +1,38 @@
+@import "./../../scss/components.module.scss";
+
+.profileInfo {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-gap: 10px;
+  padding: 30px 10px;
+
+  &_avatar {
+    height: 200px;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+
+  &_wrap {
+    padding-left: 25px;
+    &__items {
+      margin-top: 25px;
+      .item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+
+        span {
+          width: 150px;
+          color: $gt;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+}

@@ -3,11 +3,11 @@ import "./components/scss/App.scss";
 import Header from "./components/Header/Header";
 import SiteContainer from "./components/SiteContainer";
 
-const App = () => {
+const App = props => {
   return (
     <div className="app_wrapper">
       <Header />
-      <SiteContainer />
+      <SiteContainer state={props.state} />
     </div>
   );
 };

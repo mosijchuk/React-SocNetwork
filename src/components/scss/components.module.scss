@@ -19,39 +19,40 @@ $w: #fff;
 .page_wrap {
   display: grid;
   grid-template-areas: "h h" "n c";
-  grid-auto-columns: 150px 1fr;
+  grid-auto-columns: 200px 1fr;
   grid-gap: 10px;
 }
 
 .content {
   grid-area: c;
+}
 
-  .contentArea {
-    background-color: #eee;
-    border-radius: 5px;
-    background-color: $w;
-    border: 1px solid $gline;
-    overflow: hidden;
-    margin-bottom: 10px;
+.contentArea {
+  position: relative;
+  background-color: #eee;
+  border-radius: 5px;
+  background-color: $w;
+  border: 1px solid $gline;
+  overflow: hidden;
+  margin-bottom: 10px;
 
-    &_wrap {
-      padding: 10px;
+  &_wrap {
+    padding: 10px;
 
-      form {
-        button {
-          margin-left: auto;
-        }
+    form {
+      button {
+        margin-left: auto;
       }
     }
   }
+}
 
-  .content_head {
-    height: 200px;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.content_head {
+  height: 200px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
