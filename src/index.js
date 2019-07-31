@@ -3,10 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import App from "./App";
-import store from "./redux/state";
+import store from "./redux/redux-store";
 import { BrowserRouter } from "react-router-dom";
 
-let rendererEntireTree = state => {
+let rendererEntireTree = store => {
   ReactDOM.render(
     <BrowserRouter>
       <App store={store} />
@@ -15,7 +15,9 @@ let rendererEntireTree = state => {
   );
 };
 
-rendererEntireTree(store.getState());
-store.subscribe(rendererEntireTree);
+rendererEntireTree(store);
+store.subscribe(() => {
+  rendererEntireTree(store);
+});
 
 serviceWorker.unregister();

@@ -3,7 +3,7 @@ import s from "./profilePostForm.module.scss";
 import {
   addPostActionCreator,
   updateNewPostTextActionCreator
-} from "../../../redux/state";
+} from "../../../redux/profileReducer";
 
 const ProfilePostForm = props => {
   let TextAreaPost = React.createRef();
