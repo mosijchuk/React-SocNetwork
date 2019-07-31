@@ -7,23 +7,31 @@ import Dialogs from "./Dialogs/Dialogs";
 
 const SiteContainer = props => {
   return (
-    <BrowserRouter>
-      <div className={s.container}>
-        <div className={s.page_wrap}>
-          <Nav state={props.state.navbar} />
-          <div className="content">
-            <Route
-              path="/profile"
-              render={() => <Profile state={props.state.profilePage} />}
-            />
-            <Route
-              path="/dialogs"
-              render={() => <Dialogs state={props.state.dialogsPage} />}
-            />
-          </div>
+    <div className={s.container}>
+      <div className={s.page_wrap}>
+        <Nav state={props.store.getState().navbar} />
+        <div className="content">
+          <Route
+            path="/profile"
+            render={() => (
+              <Profile
+                state={props.store.getState().profilePage}
+                dispatch={props.store.dispatch.bind(props.store)}
+              />
+            )}
+          />
+          <Route
+            path="/dialogs"
+            render={() => (
+              <Dialogs
+                state={props.store.getState().dialogsPage}
+                dispatch={props.store.dispatch.bind(props.store)}
+              />
+            )}
+          />
         </div>
       </div>
-    </BrowserRouter>
+    </div>
   );
 };
 

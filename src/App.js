@@ -7,7 +7,10 @@ const App = props => {
   return (
     <div className="app_wrapper">
       <Header />
-      <SiteContainer state={props.state} />
+      <SiteContainer
+        store={props.store}
+        dispatch={props.store.dispatch.bind(props.store)}
+      />
     </div>
   );
 };

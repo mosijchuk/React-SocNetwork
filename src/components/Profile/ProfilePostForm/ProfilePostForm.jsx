@@ -1,15 +1,32 @@
 import React from "react";
-import MaterialIcon, { colorPalette } from "material-icons-react";
 import s from "./profilePostForm.module.scss";
+import {
+  addPostActionCreator,
+  updateNewPostTextActionCreator
+} from "../../../redux/state";
 
-const ProfilePostForm = () => {
+const ProfilePostForm = props => {
+  let TextAreaPost = React.createRef();
+
+  let AddPost = e => {
+    e.preventDefault();
+    props.dispatch(addPostActionCreator(TextAreaPost.current.value));
+  };
+
+  let NewPostText = () => {
+    props.dispatch(updateNewPostTextActionCreator(TextAreaPost.current.value));
+  };
+
   return (
     <div className={s.content}>
       <div className={s.contentArea}>
         <div className={s.contentArea_wrap}>
-          <form action="#">
+          <form onSubmit={AddPost}>
             <div className={s.form_group}>
               <textarea
+                onChange={NewPostText}
+                value={props.NewPostText}
+                ref={TextAreaPost}
                 name="post_text"
                 id="postText"
                 cols="30"

@@ -17,7 +17,10 @@ const Profile = props => {
   return (
     <div className={s.content}>
       <ProfileInfo />
-      <ProfilePostForm />
+      <ProfilePostForm
+        NewPostText={props.state.newPostText}
+        dispatch={props.dispatch}
+      />
 
       {posts}
     </div>
