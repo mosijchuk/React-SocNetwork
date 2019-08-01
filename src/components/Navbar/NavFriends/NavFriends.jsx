@@ -4,7 +4,8 @@ import s from "./NavFriends.module.scss";
 import NavFriendsItem from "./NavFriendsItem/NavFriendsItem";
 
 const NavFriends = props => {
-  let friends = props.state.map(friend => (
+  let state = props.store.getState().navbar.navFriends;
+  let friends = state.map(friend => (
     <NavFriendsItem name={friend.name} avatar={friend.avatar} />
   ));
 

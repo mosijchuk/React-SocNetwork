@@ -1,26 +1,26 @@
 import React from "react";
-import ProfilePost from "./ProfilePost/ProfilePost";
-import ProfilePostForm from "./ProfilePostForm/ProfilePostForm";
+import ProfilePostFormContainer from "./ProfilePostForm/ProfilePostFormContainer";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
+import ProfilePost from "./ProfilePost/ProfilePost";
 import s from "./profile.module.scss";
 
 const Profile = props => {
-  let posts = props.state.posts.map(p => (
-    <ProfilePost
-      name={p.name}
-      date={p.date}
-      message={p.message}
-      likes={p.likes}
-    />
-  ));
+  debugger;
+  let posts = props.store
+    .getState()
+    .profilePage.posts.map(p => (
+      <ProfilePost
+        name={p.name}
+        date={p.date}
+        message={p.message}
+        likes={p.likes}
+      />
+    ));
 
   return (
     <div className={s.content}>
       <ProfileInfo />
-      <ProfilePostForm
-        NewPostText={props.state.newPostText}
-        dispatch={props.dispatch}
-      />
+      <ProfilePostFormContainer store={props.store} />
 
       {posts}
     </div>

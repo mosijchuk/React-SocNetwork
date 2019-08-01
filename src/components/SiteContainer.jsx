@@ -3,31 +3,21 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Nav from "./Navbar/Nav";
 import Profile from "./Profile/Profile";
 import s from "./scss/components.module.scss";
-import Dialogs from "./Dialogs/Dialogs";
+import DialogsContainer from "./Dialogs/DialogsContainer";
 
 const SiteContainer = props => {
   return (
     <div className={s.container}>
       <div className={s.page_wrap}>
-        <Nav state={props.store.getState().navbar} />
+        <Nav store={props.store} />
         <div className="content">
           <Route
             path="/profile"
-            render={() => (
-              <Profile
-                state={props.store.getState().profilePage}
-                dispatch={props.store.dispatch.bind(props.store)}
-              />
-            )}
+            render={() => <Profile store={props.store} />}
           />
           <Route
             path="/dialogs"
-            render={() => (
-              <Dialogs
-                state={props.store.getState().dialogsPage}
-                dispatch={props.store.dispatch.bind(props.store)}
-              />
-            )}
+            render={() => <DialogsContainer store={props.store} />}
           />
         </div>
       </div>

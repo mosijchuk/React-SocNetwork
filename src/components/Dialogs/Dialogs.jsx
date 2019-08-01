@@ -3,13 +3,9 @@ import MaterialIcon, { colorPalette } from "material-icons-react";
 import s from "./dialogs.module.scss";
 import DialogItem from "./DialogItem/DialogItem";
 import DialogMessage from "./DialogMessage/DialogMessage";
-import {
-  sendMessageActionCreator,
-  updateNewMessageBodyActionCreator
-} from "../../redux/dialogsReducer";
 
 const Dialogs = props => {
-  let dialogElements = props.state.dialogs.map(dialog => (
+  let dialogElements = props.dialogs.map(dialog => (
     <DialogItem
       avatar={dialog.avatar}
       userId={dialog.userId}
@@ -18,7 +14,7 @@ const Dialogs = props => {
     />
   ));
 
-  let dialogMessageElements = props.state.messages.map(message => (
+  let dialogMessageElements = props.messages.map(message => (
     <DialogMessage
       avatar={message.avatar}
       userId={message.userId}
@@ -30,11 +26,11 @@ const Dialogs = props => {
 
   let sendMessage = e => {
     e.preventDefault();
-    props.dispatch(sendMessageActionCreator());
+    props.sendMessage();
   };
 
   let updateNewMessageBody = e => {
-    props.dispatch(updateNewMessageBodyActionCreator(e.target.value));
+    props.updateMessage(e.target.value);
   };
 
   return (
@@ -50,7 +46,7 @@ const Dialogs = props => {
               <MaterialIcon icon="attach_file" size={18} />
               <input
                 type="text"
-                value={props.state.newMessageText}
+                value={props.messageText}
                 onChange={updateNewMessageBody}
                 placeholder="Message..."
               />

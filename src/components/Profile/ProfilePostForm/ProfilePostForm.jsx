@@ -1,20 +1,14 @@
 import React from "react";
 import s from "./profilePostForm.module.scss";
-import {
-  addPostActionCreator,
-  updateNewPostTextActionCreator
-} from "../../../redux/profileReducer";
 
 const ProfilePostForm = props => {
-  let TextAreaPost = React.createRef();
-
   let AddPost = e => {
     e.preventDefault();
-    props.dispatch(addPostActionCreator(TextAreaPost.current.value));
+    props.addPost();
   };
 
-  let NewPostText = () => {
-    props.dispatch(updateNewPostTextActionCreator(TextAreaPost.current.value));
+  let NewPostText = e => {
+    props.updateText(e.target.value);
   };
 
   return (
@@ -26,7 +20,6 @@ const ProfilePostForm = props => {
               <textarea
                 onChange={NewPostText}
                 value={props.NewPostText}
-                ref={TextAreaPost}
                 name="post_text"
                 id="postText"
                 cols="30"
