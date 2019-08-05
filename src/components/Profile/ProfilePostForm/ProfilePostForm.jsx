@@ -19,6 +19,11 @@ const ProfilePostForm = props => {
             <div className={s.form_group}>
               <textarea
                 onChange={NewPostText}
+                onKeyDown={event => {
+                  if (event.keyCode === 13) {
+                    AddPost(event);
+                  }
+                }}
                 value={props.NewPostText}
                 name="post_text"
                 id="postText"

@@ -38,7 +38,7 @@ const Nav = props => {
         </NavLink>
       </div>
 
-      <NavFriends store={props.store} />
+      {/* <NavFriends store={props.store} /> */}
     </nav>
   );
 };

@@ -1,5 +1,6 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const DELETE_POST = "DELETE-POST";
 
 let initialState = {
   posts: [
@@ -33,22 +34,37 @@ let initialState = {
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_POST:
+    case ADD_POST: {
       let newPost = {
-        id: 3,
+        id: state.posts.length + 1,
         name: "Jason Statham",
         date: "29 July 2019",
         message: state.newPostText,
         likes: 0
       };
-      state.posts.push(newPost);
-      state.newPostText = "";
+      return {
+        ...state,
+        posts: [...state.posts, newPost],
+        newPostText: ""
+      };
+    }
+    case UPDATE_NEW_POST_TEXT: {
+      return {
+        ...state,
+        newPostText: action.newText
+      };
+    }
+    case DELETE_POST: {
+      return {
+        ...state,
+        posts: state.posts.filter(p => {
+          return p.id !== action.postId;
+        })
+      };
+    }
+    default: {
       return state;
-    case UPDATE_NEW_POST_TEXT:
-      state.newPostText = action.newText;
-      return state;
-    default:
-      return state;
+    }
   }
 };
 
@@ -56,6 +72,10 @@ export let addPostActionCreator = () => ({ type: ADD_POST });
 export let updateNewPostTextActionCreator = text => ({
   type: UPDATE_NEW_POST_TEXT,
   newText: text
+});
+export let deletePostAC = postId => ({
+  type: DELETE_POST,
+  postId: postId
 });
 
 export default profileReducer;

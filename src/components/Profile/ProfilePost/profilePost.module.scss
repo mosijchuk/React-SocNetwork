@@ -5,39 +5,64 @@
 }
 
 .post_head {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 11fr 1fr;
 
-  a.post_avatar {
-    img {
-      width: 50px;
-      height: 50px;
-      border-radius: 100px;
-      object-fit: cover;
-      margin-right: 15px;
-    }
-  }
-
-  .post_owner {
+  .postInfo {
     display: flex;
-    flex-direction: column;
-    a {
-      font-size: 16px;
-      color: $y;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
+    align-items: center;
+
+    a.post_avatar {
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 100px;
+        object-fit: cover;
+        margin-right: 15px;
       }
     }
+
+    .post_owner {
+      display: flex;
+      flex-direction: column;
+      a {
+        font-size: 16px;
+        color: $y;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    span.post_date {
+      font-size: 12px;
+      color: $gt;
+    }
   }
 
-  span.post_date {
-    font-size: 12px;
-    color: $gt;
+  .delPost {
+    text-align: right;
+
+    a {
+      opacity: 0;
+      transition: all 0.3s;
+
+      i {
+        color: $y !important;
+      }
+    }
+
+    &:hover {
+      a {
+        opacity: 1;
+      }
+    }
   }
 }
 
 .post_footer {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   a {
@@ -61,5 +86,11 @@
         color: $yh !important;
       }
     }
+  }
+}
+
+.post_body {
+  p {
+    margin: 15px 0;
   }
 }

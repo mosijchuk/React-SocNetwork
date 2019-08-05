@@ -5,19 +5,15 @@ import * as serviceWorker from "./serviceWorker";
 import App from "./App";
 import store from "./redux/redux-store";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 
-let rendererEntireTree = store => {
-  ReactDOM.render(
-    <BrowserRouter>
-      <App store={store} />
-    </BrowserRouter>,
-    document.getElementById("root")
-  );
-};
-
-rendererEntireTree(store);
-store.subscribe(() => {
-  rendererEntireTree(store);
-});
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 
 serviceWorker.unregister();

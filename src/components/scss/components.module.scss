@@ -4,9 +4,14 @@ $yh: #4d7097;
 $yl: #e1e5eb;
 $yt: #285473;
 $g: #f1f1f1;
+$gbg: #fafbfc;
 $gt: #828282;
 $gline: #e7e8ec;
 $w: #fff;
+
+* {
+  margin: 0;
+}
 
 .container {
   width: 1200px;
@@ -76,8 +81,14 @@ h3 {
   outline: none;
   cursor: pointer;
   transition: all 0.3s;
+  text-decoration: none;
 
   &:hover {
     background-color: $yh;
+  }
+
+  &.selected {
+    background-color: $yl;
+    color: $yt;
   }
 }
