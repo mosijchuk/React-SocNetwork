@@ -1,0 +1,34 @@
+@import "./../../scss/components.module.scss";
+
+.preloader {
+  position: fixed;
+  padding-left: 210px;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 0.68);
+
+  span {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border: 5px solid $yl;
+    border-left-color: $y;
+    border-radius: 50%;
+    z-index: 0;
+    transform: rotate(0deg);
+    animation: spin 0.3s infinite linear;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

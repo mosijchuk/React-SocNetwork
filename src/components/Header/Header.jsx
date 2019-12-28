@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import s from "./header.module.scss";
 
-const Header = () => {
+const Header = props => {
   return (
     <header className={s.header}>
       <div className={s.container}>
@@ -12,10 +12,18 @@ const Header = () => {
               <img src="./../img/logo.svg" alt="" />
             </a>
           </div>
-          <div className={s.header_wrap__buttons}>
-            <NavLink to="/users">All users</NavLink>
-            <a href="#">Logout</a>
-          </div>
+
+          {!props.isLogged ? (
+            <div className={s.header_wrap__buttons}>
+              <NavLink to="/login">Login</NavLink>
+            </div>
+          ) : (
+            <div className={s.header_wrap__buttons}>
+              <NavLink to="/users">All users</NavLink>
+
+              <a href="#">Logout</a>
+            </div>
+          )}
         </div>
       </div>
     </header>

@@ -1,6 +1,9 @@
+import { ProfileAPI, UsersAPI } from "./../API/api";
+
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const DELETE_POST = "DELETE-POST";
+const SET_USER_PROFILE = "SET_USER_PROFILE";
 
 let initialState = {
   posts: [
@@ -29,7 +32,9 @@ let initialState = {
       likes: 54
     }
   ],
-  newPostText: ""
+  newPostText: "",
+  profile: null,
+  isFollowed: false
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -62,6 +67,13 @@ const profileReducer = (state = initialState, action) => {
         })
       };
     }
+    case SET_USER_PROFILE: {
+      return {
+        ...state,
+        profile: action.profile,
+        isFollowed: action.isFollowed
+      };
+    }
     default: {
       return state;
     }
@@ -73,9 +85,49 @@ export let updateNewPostTextActionCreator = text => ({
   type: UPDATE_NEW_POST_TEXT,
   newText: text
 });
+export let setUserProfile = (profile, isFollowed) => ({
+  type: SET_USER_PROFILE,
+  profile: profile,
+  isFollowed: isFollowed
+});
+
 export let deletePostAC = postId => ({
   type: DELETE_POST,
   postId: postId
 });
+
+//thunks
+
+export let setProfileData = (userId, isFollowed) => dispatch => {
+  ProfileAPI.getProfileInfo(userId).then(data => {
+    dispatch(setUserProfile(data, isFollowed));
+  });
+};
+
+export let getFollowUser = userId => dispatch => {
+  UsersAPI.getFollowUser(userId).then(followStatus => {
+    dispatch(setProfileData(userId, followStatus));
+  });
+};
+
+export let followProfile = userId => dispatch => {
+  UsersAPI.followUser(userId).then(data => {
+    if (data.resultCode === 0) {
+      UsersAPI.getFollowUser(userId).then(followStatus => {
+        dispatch(setProfileData(userId, followStatus));
+      });
+    }
+  });
+};
+
+export let unfollowProfile = userId => dispatch => {
+  UsersAPI.unfollowUser(userId).then(data => {
+    if (data.resultCode === 0) {
+      UsersAPI.getFollowUser(userId).then(followStatus => {
+        dispatch(setProfileData(userId, followStatus));
+      });
+    }
+  });
+};
 
 export default profileReducer;

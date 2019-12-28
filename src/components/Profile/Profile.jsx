@@ -8,7 +8,7 @@ import ProfilePostsContainer from "./ProfilePostsContainer";
 const Profile = props => {
   return (
     <div className={s.content}>
-      <ProfileInfo />
+      <ProfileInfo {...props} />
       <ProfilePostFormContainer />
       <ProfilePostsContainer />
     </div>

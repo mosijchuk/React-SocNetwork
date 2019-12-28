@@ -29,6 +29,7 @@ $w: #fff;
 }
 
 .content {
+  position: relative;
   grid-area: c;
 }
 
@@ -90,5 +91,68 @@ h3 {
   &.selected {
     background-color: $yl;
     color: $yt;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+form {
+  .form_group {
+    margin-bottom: 10px;
+
+    input {
+      width: 100%;
+      height: 35px;
+      box-sizing: border-box;
+      resize: none;
+      border: 1px solid $gline;
+      border-radius: 3px;
+      outline: none;
+      font-size: 14px;
+      padding: 10px;
+
+      &:hover,
+      :focus {
+        outline: none;
+      }
+    }
+
+    textarea {
+      width: 100%;
+      height: 75px;
+      box-sizing: border-box;
+      resize: none;
+      border: 1px solid $gline;
+      border-radius: 3px;
+      outline: none;
+      font-size: 14px;
+      padding: 10px;
+
+      &:hover,
+      :focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.sectionHeader {
+  padding: 15px;
+  background-color: $gbg;
+  display: flex;
+  align-items: center;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    margin-right: 15px;
+  }
+
+  .secondary {
+    color: $gt;
+    font-size: 12px;
   }
 }

@@ -1,23 +1,5 @@
 @import "./../scss/components.module.scss";
 
-.header {
-  padding: 15px;
-  background-color: $gbg;
-  display: flex;
-  align-items: center;
-
-  h2 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
-    margin-right: 15px;
-  }
-  .usersCount {
-    color: $gt;
-    font-size: 12px;
-  }
-}
-
 .usersWrap {
   margin-top: 25px;
 }
@@ -44,6 +26,7 @@
 
   .userInfo {
     display: block;
+    overflow: hidden;
 
     .userName {
       font-size: 14px;
@@ -70,5 +53,16 @@
 
   .followWrap {
     text-align: right;
+  }
+}
+
+.showMoreWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  padding-bottom: 25px;
+  a {
+    width: 200px;
   }
 }

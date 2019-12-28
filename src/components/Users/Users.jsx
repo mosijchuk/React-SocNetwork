@@ -1,36 +1,29 @@
 import React from "react";
 import s from "./Users.module.scss";
-import * as axios from "axios";
 import userPhoto from "../../assets/img/user.jpg";
+import { NavLink } from "react-router-dom";
 
 const Users = props => {
-  if (props.users.length === 0) {
-    axios
-      .get("https://social-network.samuraijs.com/api/1.0/users")
-      .then(response => {
-        props.setUsers(response.data.items);
-      });
-  }
   return (
     <div className={s.content}>
       <div className={s.contentArea}>
-        <div className={s.header}>
+        <div className={s.sectionHeader}>
           <h2>Users</h2>
-          <p className={s.usersCount}>{props.usersCount}</p>
+          <p className={s.secondary}>{props.usersCount}</p>
         </div>
         <div className={s.usersWrap}>
           {props.users.map(u => (
             <div className={s.user} key={u.id}>
-              <a href="#" className={s.avatar}>
+              <NavLink to={"/profile/" + u.id} className={s.avatar}>
                 <img
                   src={u.photos.small != null ? u.photos.small : userPhoto}
                   alt="avatar"
                 />
-              </a>
+              </NavLink>
               <div className={s.userInfo}>
-                <a href="#" className={s.userName}>
+                <NavLink to={"/profile/" + u.id} className={s.userName}>
                   {u.name}
-                </a>
+                </NavLink>
                 <p className={s.location}>Kyiv, Ukraine</p>
                 <p className={s.status}>{u.status}</p>
               </div>
@@ -63,6 +56,22 @@ const Users = props => {
           ))}
         </div>
       </div>
+      {props.currentPage !== props.usersPages ? (
+        <div className={s.showMoreWrap}>
+          <a
+            href="#"
+            className={`${s.btn_b} ${s.selected}`}
+            onClick={e => {
+              e.preventDefault();
+              props.onPageChange(props.currentPage + 1);
+            }}
+          >
+            Load more
+          </a>
+        </div>
+      ) : (
+        <p />
+      )}
     </div>
   );
 };
