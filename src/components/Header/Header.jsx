@@ -21,7 +21,9 @@ const Header = props => {
             <div className={s.header_wrap__buttons}>
               <NavLink to="/users">All users</NavLink>
 
-              <a href="#">Logout</a>
+              <a href="#" onClick={props.logout}>
+                Logout
+              </a>
             </div>
           )}
         </div>

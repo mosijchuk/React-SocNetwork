@@ -39,12 +39,51 @@ export const ProfileAPI = {
     return instance.get(`profile/${userId}`).then(response => {
       return response.data;
     });
+  },
+  getProfileStatus(userId = 1) {
+    return instance.get(`profile/status/${userId}`).then(response => {
+      return response.data;
+    });
+  },
+  updateProfileStatus(status) {
+    return instance
+      .put(`profile/status`, {
+        status: status
+      })
+      .then(response => {
+        if (response.data.resultCode === 0) {
+          return status;
+        }
+      });
+  },
+  updateProfileAvatar(formData) {
+    return instance
+      .post(`profile/photo`, formData, {
+        headers: {
+          "Content-type": "multipart/form-data"
+        }
+      })
+      .then(response => {
+        return response.data;
+      });
   }
 };
 
 export const AuthAPI = {
   authMe() {
     return instance.get(`auth/me`).then(response => {
+      return response.data;
+    });
+  },
+  login(email, password, rememberMe) {
+    return instance
+      .post(`auth/login`, { email, password, rememberMe })
+      .then(response => {
+        return response.data;
+      });
+  },
+  logout() {
+    return instance.delete(`auth/login`).then(response => {
       return response.data;
     });
   }

@@ -5,5 +5,18 @@
     width: 100%;
     max-width: 400px;
     margin: 15px;
+
+    .errorSubmit {
+      background-color: $red;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding: 10px;
+
+      small {
+        color: $w;
+      }
+    }
   }
 }

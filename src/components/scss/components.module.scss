@@ -7,6 +7,7 @@ $g: #f1f1f1;
 $gbg: #fafbfc;
 $gt: #828282;
 $gline: #e7e8ec;
+$red: #bd4848;
 $w: #fff;
 
 * {
@@ -101,6 +102,9 @@ h3 {
 form {
   .form_group {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 
     input {
       width: 100%;
@@ -117,6 +121,11 @@ form {
       :focus {
         outline: none;
       }
+    }
+
+    input[type="checkbox"] {
+      width: max-content;
+      margin-right: 5px;
     }
 
     textarea {

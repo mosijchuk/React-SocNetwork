@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { authMe } from "../../redux/authReducer";
+import { logoutMe } from "../../redux/authReducer";
 import Header from "./Header";
 import { Redirect } from "react-router-dom";
-import { AuthAPI } from "../../API/api";
 
 class HeaderContainer extends React.Component {
   constructor(props) {
@@ -13,17 +12,21 @@ class HeaderContainer extends React.Component {
     };
   }
   componentDidMount() {
-    if (this.props.authMe()) {
-      this.setState({
-        authFalse: !this.props.isLogged
-      });
-    }
+    this.setState({
+      authFalse: !this.props.isLogged
+    });
   }
+
+  logout = e => {
+    e.preventDefault();
+    this.props.logoutMe();
+  };
+
   render() {
     return (
       <div>
-        {this.state.authFalse ? <Redirect push to="/login" /> : ""}
-        <Header {...this.props} />
+        {!this.props.isLogged ? <Redirect push to="/login" /> : ""}
+        <Header {...this.props} logout={this.logout} />
       </div>
     );
   }
@@ -35,7 +38,4 @@ let mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { authMe }
-)(HeaderContainer);
+export default connect(mapStateToProps, { logoutMe })(HeaderContainer);

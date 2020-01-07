@@ -1,1 +1,10 @@
 @import "./../../scss/components.module.scss";
+
+form {
+  width: 100%;
+  box-sizing: border-box;
+
+  button {
+    margin-top: 5px;
+  }
+}

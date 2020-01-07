@@ -1,5 +1,4 @@
 const SEND_MESSAGE = "SEND-MESSAGE";
-const UPDATE_NEW_MESSAGE_BODY = "UPDATE-NEW-MESSAGE-BODY";
 
 let initialState = {
   dialogs: [
@@ -67,8 +66,7 @@ let initialState = {
       date: "12:43",
       userType: false
     }
-  ],
-  newMessageText: ""
+  ]
 };
 const dialogsReducer = (state = initialState, action) => {
   let stateCopy;
@@ -78,7 +76,7 @@ const dialogsReducer = (state = initialState, action) => {
         userId: 3,
         avatar:
           "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-        message: state.newMessageText,
+        message: action.message.message_text,
         date: "02:51",
         userType: "owner"
       };
@@ -89,20 +87,19 @@ const dialogsReducer = (state = initialState, action) => {
         newMessageText: ""
       };
 
-    case UPDATE_NEW_MESSAGE_BODY:
-      return {
-        ...state,
-        newMessageText: action.newText
-      };
     default:
       return state;
   }
 };
 
-export let sendMessageActionCreator = () => ({ type: SEND_MESSAGE });
-export let updateNewMessageBodyActionCreator = text => ({
-  type: UPDATE_NEW_MESSAGE_BODY,
-  newText: text
+export let sendMessageAction = message => ({
+  type: SEND_MESSAGE,
+  message: message
 });
+
+//thunkx
+export let sendMessage = message => dispatch => {
+  dispatch(sendMessageAction(message));
+};
 
 export default dialogsReducer;

@@ -1,42 +1,51 @@
 import React from "react";
 import s from "./profilePostForm.module.scss";
+import { Field, reduxForm } from "redux-form";
+import { Textarea } from "../../common/Form/FormItems";
+import { required, maxLengthCreator } from "../../common/Form/validators";
+
+const maxLength150 = maxLengthCreator(150);
+
+const PostForm = props => {
+  return (
+    <form
+      onSubmit={props.handleSubmit}
+      onKeyDown={event => {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          props.handleSubmit();
+        }
+      }}
+    >
+      <Field
+        component={Textarea}
+        name={"post_text"}
+        placeholder={"Your news..."}
+        cols={"30"}
+        rows={"10"}
+        validate={[required, maxLength150]}
+      />
+      <button type="submit" className={s.btn_b}>
+        Post
+      </button>
+    </form>
+  );
+};
+
+let ProfilePostReduxForm = reduxForm({
+  form: "profilePost"
+})(PostForm);
 
 const ProfilePostForm = props => {
-  let AddPost = e => {
-    e.preventDefault();
-    props.addPost();
-  };
-
-  let NewPostText = e => {
-    props.updateText(e.target.value);
+  let onSubmit = postText => {
+    props.addPost(postText);
   };
 
   return (
     <div className={s.content}>
       <div className={s.contentArea}>
         <div className={s.contentArea_wrap}>
-          <form onSubmit={AddPost}>
-            <div className={s.form_group}>
-              <textarea
-                onChange={NewPostText}
-                onKeyDown={event => {
-                  if (event.keyCode === 13) {
-                    AddPost(event);
-                  }
-                }}
-                value={props.NewPostText}
-                name="post_text"
-                id="postText"
-                cols="30"
-                rows="10"
-                placeholder="Your news..."
-                required
-              />
-            </div>
-            <button type="submit" className={s.btn_b}>
-              Post
-            </button>
-          </form>
+          <ProfilePostReduxForm onSubmit={onSubmit} />
         </div>
       </div>
     </div>
