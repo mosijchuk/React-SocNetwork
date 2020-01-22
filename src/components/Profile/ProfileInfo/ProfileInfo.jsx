@@ -38,6 +38,7 @@ const ProfileInfo = props => {
     e.preventDefault();
   };
 
+
   return (
     <div className={s.contentArea}>
       <div className={s.profileInfo}>

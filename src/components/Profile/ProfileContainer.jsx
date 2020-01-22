@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { compose } from "redux";
@@ -15,57 +15,38 @@ import Preloader from "../common/Preloader/Preloader";
 import Profile from "./Profile";
 import s from "./profile.module.scss";
 
-class ProfileContainer extends React.Component {
-  selfPage = true;
+const ProfileContainer = props => {
+  const [userId, setUserId] = useState(props.match.params.userId || props.myId);
+  const [loaded, setLoaded] = useState(false);
+  const [selfPage, setSelfPage] = useState(true);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      userId: this.props.match.params.userId || this.props.myId,
-      loaded: false
-    };
-  }
-
-  setProfileDataAfterReceiving = () => {
-    if (this.state.userId && !this.state.loaded) {
-      this.props.setProfileData(this.state.userId, this.props.isFollowed);
-      this.props.getFollowUser(this.state.userId);
-      this.setState({
-        loaded: true
-      });
+  const setProfileDataAfterReceiving = () => {
+    if (userId && !loaded) {
+      props.setProfileData(userId, props.isFollowed);
+      props.getFollowUser(userId);
+      setLoaded(true);
     }
   };
 
-  componentDidMount() {
-    this.setProfileDataAfterReceiving();
-  }
+  useEffect(() => {
+    setProfileDataAfterReceiving();
+    setUserId(props.match.params.userId || props.myId);
 
-  componentDidUpdate(prevProps, prevState) {
-    this.setProfileDataAfterReceiving();
+    if (props.match.params.userId) {
+      setSelfPage(false);
+    }
+  }, [props]);
 
-    if (prevProps.myId !== this.props.myId) {
-      this.setState({
-        userId: this.props.match.params.userId || this.props.myId,
-        loaded: false
-      });
-    }
-    if (this.props.match.params.userId) {
-      this.selfPage = false;
-    }
+  if (!loaded) {
+    return <Preloader />;
+  } else {
+    return (
+      <div className={s.content}>
+        <Profile {...props} selfPage={selfPage} />
+      </div>
+    );
   }
-
-  render() {
-    if (!this.state.loaded) {
-      return <Preloader />;
-    } else {
-      return (
-        <div className={s.content}>
-          <Profile {...this.props} selfPage={this.selfPage} />
-        </div>
-      );
-    }
-  }
-}
+};
 
 let mapStateToProps = state => {
   return {

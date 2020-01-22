@@ -1,3 +1,5 @@
+import { reset } from "redux-form";
+
 const SEND_MESSAGE = "SEND-MESSAGE";
 
 let initialState = {
@@ -98,8 +100,9 @@ export let sendMessageAction = message => ({
 });
 
 //thunkx
-export let sendMessage = message => dispatch => {
+export let sendMessage = (message, formName) => dispatch => {
   dispatch(sendMessageAction(message));
+  dispatch(reset(formName));
 };
 
 export default dialogsReducer;

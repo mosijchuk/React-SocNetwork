@@ -1,4 +1,6 @@
-import { UsersAPI } from "../API/api";
+import {
+  UsersAPI
+} from "../API/api";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -22,7 +24,10 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         users: state.users.map(u => {
           if (u.id === action.userId) {
-            return { ...u, followed: true };
+            return {
+              ...u,
+              followed: true
+            };
           }
           return u;
         })
@@ -32,7 +37,10 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         users: state.users.map(u => {
           if (u.id === action.userId) {
-            return { ...u, followed: false };
+            return {
+              ...u,
+              followed: false
+            };
           }
           return u;
         })
@@ -63,9 +71,18 @@ const usersReducer = (state = initialState, action) => {
   }
 };
 
-export let followSuccess = userId => ({ type: FOLLOW, userId });
-export let unfollowSuccess = userId => ({ type: UNFOLLOW, userId });
-export let setUsers = users => ({ type: SET_USERS, users });
+export let followSuccess = userId => ({
+  type: FOLLOW,
+  userId
+});
+export let unfollowSuccess = userId => ({
+  type: UNFOLLOW,
+  userId
+});
+export let setUsers = users => ({
+  type: SET_USERS,
+  users
+});
 export let setCurrentPage = page_number => ({
   type: SET_CURRENT_USERS_PAGE,
   page_number

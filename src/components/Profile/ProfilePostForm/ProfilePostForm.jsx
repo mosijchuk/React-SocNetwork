@@ -32,13 +32,15 @@ const PostForm = props => {
   );
 };
 
+let formName = "profilePost";
+
 let ProfilePostReduxForm = reduxForm({
-  form: "profilePost"
+  form: formName
 })(PostForm);
 
 const ProfilePostForm = props => {
   let onSubmit = postText => {
-    props.addPost(postText);
+    props.addPost(postText, formName);
   };
 
   return (

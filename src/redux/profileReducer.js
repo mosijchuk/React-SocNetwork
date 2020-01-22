@@ -1,4 +1,10 @@
-import { ProfileAPI, UsersAPI } from "./../API/api";
+import {
+  ProfileAPI,
+  UsersAPI
+} from "./../API/api";
+import {
+  reset
+} from "redux-form";
 
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";
@@ -7,29 +13,25 @@ const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
 const PROFILE_LOADING = "PROFILE_LOADING";
 
 let initialState = {
-  posts: [
-    {
+  posts: [{
       id: 1,
       name: "Jason Statham",
       date: "8 July 2019",
-      message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 7
     },
     {
       id: 2,
       name: "Jason Statham",
       date: "7 July 2019",
-      message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 42
     },
     {
       id: 3,
       name: "Jason Statham",
       date: "6 July 2019",
-      message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 54
     }
   ],
@@ -146,8 +148,9 @@ export let updateProfileAvatar = (formData, myId) => dispatch => {
   });
 };
 
-export let addPost = postText => dispatch => {
+export let addPost = (postText, formName) => dispatch => {
   dispatch(addPostAction(postText));
+  dispatch(reset(formName));
 };
 
 export let getFollowUser = userId => dispatch => {
@@ -156,24 +159,21 @@ export let getFollowUser = userId => dispatch => {
   });
 };
 
-export let followProfile = userId => dispatch => {
-  UsersAPI.followUser(userId).then(data => {
-    if (data.resultCode === 0) {
-      UsersAPI.getFollowUser(userId).then(followStatus => {
-        dispatch(setProfileData(userId, followStatus));
-      });
-    }
-  });
+export let followProfile = userId => async dispatch => {
+  const data = await UsersAPI.followUser(userId);
+  if (data.resultCode === 0) {
+    let followStatus = await UsersAPI.getFollowUser(userId);
+    dispatch(setProfileData(userId, followStatus));
+  }
 };
 
-export let unfollowProfile = userId => dispatch => {
-  UsersAPI.unfollowUser(userId).then(data => {
-    if (data.resultCode === 0) {
-      UsersAPI.getFollowUser(userId).then(followStatus => {
-        dispatch(setProfileData(userId, followStatus));
-      });
-    }
-  });
+export let unfollowProfile = userId => async dispatch => {
+  const data = await UsersAPI.unfollowUser(userId);
+  if (data.resultCode === 0) {
+    let followStatus = await UsersAPI.getFollowUser(userId);
+    dispatch(setProfileData(userId, followStatus));
+  }
 };
+
 
 export default profileReducer;

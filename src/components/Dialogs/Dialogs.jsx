@@ -31,8 +31,10 @@ const DialogForm = props => {
   );
 };
 
+let formName = "profilePdialogMessageost";
+
 const DialogReduxForm = reduxForm({
-  form: "dialogMessage"
+  form: formName
 })(DialogForm);
 
 const Dialogs = props => {
@@ -56,7 +58,7 @@ const Dialogs = props => {
   ));
 
   let onSubmit = message => {
-    props.sendMessage(message);
+    props.sendMessage(message, formName);
   };
 
   return (
