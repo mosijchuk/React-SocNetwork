@@ -13,6 +13,7 @@ const DELETE_MESSAGE = "DELETE_MESSAGE";
 const IS_LOADING_DIALOGS = "IS_LOADING_DIALOGS";
 const IS_LOADING_MESSAGES = "IS_LOADING_MESSAGES";
 const SET_NEW_MESSAGES_COUNT = "SET_NEW_MESSAGES_COUNT";
+const START_UPDATE_NEW_MESSAGES = "START_UPDATE_NEW_MESSAGES";
 
 let initialState = {
   dialogs: [],
@@ -29,7 +30,8 @@ let initialState = {
   },
   isLoadingDialogs: true,
   isLoadingMessages: true,
-  newMessagesCount: 0
+  newMessagesCount: 0,
+  startUpdateNewMessages: false
 };
 const dialogsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -51,6 +53,11 @@ const dialogsReducer = (state = initialState, action) => {
       return {
         ...state,
         newMessagesCount: action.count
+      };
+    case START_UPDATE_NEW_MESSAGES:
+      return {
+        ...state,
+        startUpdateNewMessages: action.isStart
       };
     case SET_MESSAGES:
       return {
@@ -118,6 +125,11 @@ let sendMessageSuccess = message => ({
 let setNewMessagesCount = count => ({
   type: SET_NEW_MESSAGES_COUNT,
   count
+});
+
+let setStartUpdateNewMessages = isStart => ({
+  type: START_UPDATE_NEW_MESSAGES,
+  isStart
 });
 
 let setDialogs = dialogs => ({
@@ -190,16 +202,35 @@ export let getDialogs = () => dispatch => {
   });
 };
 
+///////ch
 export let checkNewMessages = () => (dispatch, getState) => {
-  const newMessagesCount = getState().dialogsPage.newMessagesCount;
+  let newMessagesCount = getState().dialogsPage.newMessagesCount;
+  let isStarted = getState().dialogsPage.startUpdateNewMessages;
+  let isLogged = getState().auth.isLogged;
+  let checker;
+
   const check = () => {
-    DialogsAPI.checkNewMessages().then(response => {
-      if (response.data && newMessagesCount != response.data) {
-        dispatch(setNewMessagesCount(response.data));
-      }
-    });
+    newMessagesCount = getState().dialogsPage.newMessagesCount;
+    isStarted = getState().dialogsPage.startUpdateNewMessages;
+    isLogged = getState().auth.isLogged;
+
+    if (isLogged) {
+      DialogsAPI.checkNewMessages().then(response => {
+        if (response.data && newMessagesCount != response.data) {
+          dispatch(setNewMessagesCount(response.data));
+        }
+        console.log("New messages: " + response.data);
+      });
+    } else {
+      clearInterval(checker);
+      dispatch(setStartUpdateNewMessages(false));
+    }
   };
-  setInterval(check, 3000);
+
+  if (!isStarted && isLogged) {
+    dispatch(setStartUpdateNewMessages(true));
+    checker = setInterval(check, 3000);
+  }
 };
 
 export let checkEditMode = (dispatch, getState) => (dispatch, getState) => {

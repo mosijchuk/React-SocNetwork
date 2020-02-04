@@ -6,9 +6,7 @@ import Nav from "./Nav";
 import { checkNewMessages } from "../../redux/dialogsReducer";
 
 let mapStateToProps = state => {
-  return {
-    newMessages: state.dialogsPage.newMessagesCount
-  };
+  return {};
 };
 
 export default compose(

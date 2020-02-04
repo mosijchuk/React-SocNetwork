@@ -5,11 +5,6 @@ import { NavLink } from "react-router-dom";
 import NavFriends from "./NavFriends/NavFriends";
 
 const Nav = props => {
-  useEffect(() => {
-    props.checkNewMessages();
-    console.log("check new mesgs call");
-  }, []);
-
   return (
     <nav className={s.nav}>
       <div className={s.nav_item}>

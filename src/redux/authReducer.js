@@ -1,5 +1,6 @@
 import { AuthAPI, SecurityAPI } from "./../API/api";
 import { stopSubmit } from "redux-form";
+import { checkNewMessages } from "./dialogsReducer";
 
 const SET_LOGIN_DATA = "SET_LOGIN_DATA";
 const SET_CAPTCHA_URL = "SET_CAPTCHA_URL";
@@ -43,6 +44,7 @@ export let authMe = userId => dispatch => {
       let { id, email, login } = data.data;
       let isLogged = true;
       dispatch(setAuthUserData(id, email, login, isLogged));
+      dispatch(checkNewMessages());
     } else {
       dispatch(setAuthUserData(false, false, false, false));
     }
