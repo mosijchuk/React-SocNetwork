@@ -25,6 +25,19 @@
     transform: rotate(0deg);
     animation: spin 0.3s infinite linear;
   }
+
+  &.center {
+    padding-left: 0;
+  }
+
+  &.inner {
+    padding: 15px;
+    position: absolute;
+  }
+
+  &.noBg {
+    background-color: transparent;
+  }
 }
 
 @keyframes spin {

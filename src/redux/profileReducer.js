@@ -1,37 +1,37 @@
-import {
-  ProfileAPI,
-  UsersAPI
-} from "./../API/api";
-import {
-  reset
-} from "redux-form";
+import { ProfileAPI, UsersAPI } from "./../API/api";
+import { reset, stopSubmit } from "redux-form";
 
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE";
 const SET_PROFILE_STATUS = "SET_PROFILE_STATUS";
+const SET_PROFILE_AVATAR = "SET_PROFILE_AVATAR";
 const PROFILE_LOADING = "PROFILE_LOADING";
 
 let initialState = {
-  posts: [{
+  posts: [
+    {
       id: 1,
       name: "Jason Statham",
       date: "8 July 2019",
-      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 7
     },
     {
       id: 2,
       name: "Jason Statham",
       date: "7 July 2019",
-      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 42
     },
     {
       id: 3,
       name: "Jason Statham",
       date: "6 July 2019",
-      message: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis rem nostrum ea magni numquam, autem dignissimos pariatur? Dolores culpa, porro, vel molestiae ea repellendus obcaecati necessitatibus tempore, ab asperiores nulla.",
       likes: 54
     }
   ],
@@ -78,6 +78,12 @@ const profileReducer = (state = initialState, action) => {
         profileStatus: action.status
       };
     }
+    case SET_PROFILE_AVATAR: {
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos }
+      };
+    }
     case PROFILE_LOADING: {
       return {
         ...state,
@@ -101,9 +107,14 @@ export let setUserProfile = (profile, isFollowed) => ({
   isFollowed: isFollowed
 });
 
-export let setProfileStatus = status => ({
+export let setProfileStatusAC = status => ({
   type: SET_PROFILE_STATUS,
   status: status
+});
+
+export let setProfileAvatar = photos => ({
+  type: SET_PROFILE_AVATAR,
+  photos
 });
 
 export let deletePostAC = postId => ({
@@ -118,15 +129,18 @@ export let toggleLoading = toggle => ({
 
 //thunks
 
+export let setProfileStatus = userId => dispatch => {
+  ProfileAPI.getProfileStatus(userId).then(data => {
+    dispatch(setProfileStatusAC(data));
+  });
+};
+
 export let setProfileData = (userId, isFollowed) => dispatch => {
   dispatch(toggleLoading(true));
-  ProfileAPI.getProfileStatus(userId).then(data => {
-    dispatch(setProfileStatus(data));
 
-    ProfileAPI.getProfileInfo(userId).then(data => {
-      dispatch(toggleLoading(false));
-      dispatch(setUserProfile(data, isFollowed));
-    });
+  ProfileAPI.getProfileInfo(userId).then(data => {
+    dispatch(setUserProfile(data, isFollowed));
+    dispatch(toggleLoading(false));
   });
 };
 
@@ -134,17 +148,32 @@ export let updateProfileStatus = status => dispatch => {
   dispatch(toggleLoading(true));
   ProfileAPI.updateProfileStatus(status).then(data => {
     dispatch(toggleLoading(false));
-    dispatch(setProfileStatus(data));
+    dispatch(setProfileStatusAC(data));
   });
 };
 
-export let updateProfileAvatar = (formData, myId) => dispatch => {
+export let updateProfileData = formData => (dispatch, getState) => {
+  const userId = getState().auth.userId;
+
+  ProfileAPI.updateProfileData(formData).then(data => {
+    if (data.resultCode === 0) {
+      dispatch(setProfileData(userId));
+    } else {
+      dispatch(stopSubmit("profileEdit", { _error: data.messages[0] }));
+    }
+  });
+};
+
+export let updateProfileAvatar = formData => (dispatch, getState) => {
+  const userId = getState().auth.userId;
+
   dispatch(toggleLoading(true));
   ProfileAPI.updateProfileAvatar(formData).then(data => {
-    dispatch(toggleLoading(false));
     if (data.resultCode === 0) {
-      dispatch(setProfileData(myId, false));
+      dispatch(setProfileAvatar(data.data.photos));
+      console.log(data);
     }
+    dispatch(toggleLoading(false));
   });
 };
 
@@ -174,6 +203,5 @@ export let unfollowProfile = userId => async dispatch => {
     dispatch(setProfileData(userId, followStatus));
   }
 };
-
 
 export default profileReducer;

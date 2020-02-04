@@ -35,7 +35,7 @@ class ProfileStatus extends React.Component {
   };
 
   activateEditMode = () => {
-    if (this.props.selfPage) {
+    if (this.props.isOwner) {
       this.setState({
         editMode: true
       });
@@ -61,7 +61,10 @@ class ProfileStatus extends React.Component {
         )}
         {this.state.editMode && (
           <div className={s.statusEditWrap}>
-            <ProfileStatusReduxForm onSubmit={this.deactivateEditMode} />
+            <ProfileStatusReduxForm
+              initialValues={{ statusText: this.props.profileStatus }}
+              onSubmit={this.deactivateEditMode}
+            />
           </div>
         )}
       </div>

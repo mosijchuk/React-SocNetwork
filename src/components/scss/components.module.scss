@@ -144,6 +144,24 @@ form {
         outline: none;
       }
     }
+
+    input,
+    textarea {
+      font-family: "Montserrat", sans-serif;
+    }
+  }
+
+  .errorSubmit {
+    background-color: $red;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 10px;
+
+    small {
+      color: $w;
+    }
   }
 }
 
@@ -164,4 +182,13 @@ form {
     color: $gt;
     font-size: 12px;
   }
+}
+
+.sticker {
+  padding: 2px 5px;
+  background-color: $y;
+  color: $w;
+  font-size: 12px;
+  margin-left: 5px;
+  border-radius: 3px;
 }

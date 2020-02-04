@@ -53,11 +53,13 @@
   }
 
   .followWrap {
+    position: relative;
     text-align: right;
   }
 }
 
 .showMoreWrap {
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;

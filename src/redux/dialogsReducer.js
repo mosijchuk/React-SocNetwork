@@ -1,108 +1,256 @@
 import { reset } from "redux-form";
+import { DialogsAPI } from "../API/api";
 
 const SEND_MESSAGE = "SEND-MESSAGE";
+const SET_DIALOGS = "SET_DIALOGS";
+const SET_MESSAGES = "SET_MESSAGES";
+const SELECT_DIALOG = "SELECT_DIALOG";
+const SELECT_MESSAGE = "SELECT_MESSAGE";
+const DESELECT_MESSAGE = "DESELECT_MESSAGE";
+const DESELECT_ALL_MESSAGES = "DESELECT_ALL_MESSAGES";
+const SET_EDIT_MODE = "SET_EDIT_MODE";
+const DELETE_MESSAGE = "DELETE_MESSAGE";
+const IS_LOADING_DIALOGS = "IS_LOADING_DIALOGS";
+const IS_LOADING_MESSAGES = "IS_LOADING_MESSAGES";
+const SET_NEW_MESSAGES_COUNT = "SET_NEW_MESSAGES_COUNT";
 
 let initialState = {
-  dialogs: [
-    {
-      userId: 1,
-      userName: "Jason Statham",
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      postDate: "27 Июл 2019"
-    },
-    {
-      userId: 2,
-      userName: "Tony Stark",
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      postDate: "25 Июл 2019"
-    },
-    {
-      userId: 3,
-      userName: "Vin Diesel",
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      postDate: "23 Июл 2019"
-    }
-  ],
-  messages: [
-    {
-      userId: 1,
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      message:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus odit, necessitatibus ullam deserunt vitae enim? Aliquid commodi, amet beatae sit fuga blanditiis architecto modi voluptatum? Possimus eaque accusantium consequuntur reiciendis?",
-      date: "12:54",
-      userType: false
-    },
-    {
-      userId: 2,
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      message: "Lorem",
-      date: "12:54",
-      userType: false
-    },
-    {
-      userId: 3,
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      message: "Lorem",
-      date: "12:43",
-      userType: "owner"
-    },
-    {
-      userId: 4,
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      message: "Здарова придурок!",
-      date: "12:43",
-      userType: "owner"
-    },
-    {
-      userId: 5,
-      avatar:
-        "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-      message: "Где макет?)",
-      date: "12:43",
-      userType: false
-    }
-  ]
+  dialogs: [],
+  messages: {
+    items: [],
+    totalCount: 0,
+    error: null
+  },
+  selectedDialog: null,
+  selectedMessages: [],
+  editMode: {
+    status: false,
+    count: 0
+  },
+  isLoadingDialogs: true,
+  isLoadingMessages: true,
+  newMessagesCount: 0
 };
 const dialogsReducer = (state = initialState, action) => {
-  let stateCopy;
   switch (action.type) {
     case SEND_MESSAGE:
-      let newMessage = {
-        userId: 3,
-        avatar:
-          "https://www.vokrug.tv/pic/person/6/7/5/b/675b60f5536dbbdb6493b6a442fd1286.jpg",
-        message: action.message.message_text,
-        date: "02:51",
-        userType: "owner"
-      };
-
       return {
         ...state,
-        messages: [...state.messages, newMessage],
-        newMessageText: ""
+        messages: {
+          ...state.messages,
+          items: [...state.messages.items, action.message],
+          totalCount: state.messages.totalCount + 1
+        }
       };
-
+    case SET_DIALOGS:
+      return {
+        ...state,
+        dialogs: action.dialogs
+      };
+    case SET_NEW_MESSAGES_COUNT:
+      return {
+        ...state,
+        newMessagesCount: action.count
+      };
+    case SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.messages
+      };
+    case SELECT_DIALOG:
+      return {
+        ...state,
+        selectedDialog: action.dialog
+      };
+    case SELECT_MESSAGE:
+      return {
+        ...state,
+        selectedMessages: [...state.selectedMessages, action.selectedMessage]
+      };
+    case DESELECT_MESSAGE:
+      return {
+        ...state,
+        selectedMessages: state.selectedMessages.filter(mes => {
+          return mes.id !== action.messageId;
+        })
+      };
+    case DESELECT_ALL_MESSAGES:
+      return {
+        ...state,
+        selectedMessages: []
+      };
+    case SET_EDIT_MODE:
+      return {
+        ...state,
+        editMode: action.editMode
+      };
+    case DELETE_MESSAGE:
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          items: state.messages.items.filter(mes => {
+            return mes.id !== action.messageId;
+          }),
+          totalCount: state.messages.totalCount - 1
+        }
+      };
+    case IS_LOADING_MESSAGES:
+      return {
+        ...state,
+        isLoadingMessages: action.loading
+      };
+    case IS_LOADING_DIALOGS:
+      return {
+        ...state,
+        isLoadingDialogs: action.loading
+      };
     default:
       return state;
   }
 };
 
-export let sendMessageAction = message => ({
+let sendMessageSuccess = message => ({
   type: SEND_MESSAGE,
-  message: message
+  message
+});
+
+let setNewMessagesCount = count => ({
+  type: SET_NEW_MESSAGES_COUNT,
+  count
+});
+
+let setDialogs = dialogs => ({
+  type: SET_DIALOGS,
+  dialogs
+});
+
+let setMessages = messages => ({
+  type: SET_MESSAGES,
+  messages
+});
+
+let selectDialog = selectedDialog => ({
+  type: SELECT_DIALOG,
+  selectedDialog
+});
+
+let addToSelectedMessages = selectedMessage => ({
+  type: SELECT_MESSAGE,
+  selectedMessage
+});
+
+let removeFromSelectedMessages = messageId => ({
+  type: DESELECT_MESSAGE,
+  messageId
+});
+
+let setLoadingMessages = loading => ({
+  type: IS_LOADING_MESSAGES,
+  loading
+});
+
+let setLoadingDialogs = loading => ({
+  type: IS_LOADING_DIALOGS,
+  loading
+});
+
+let clearSelectedMessages = () => ({
+  type: DESELECT_ALL_MESSAGES
+});
+
+let deleteMessage = messageId => ({
+  type: DELETE_MESSAGE,
+  messageId
+});
+
+let setEditMode = editMode => ({
+  type: SET_EDIT_MODE,
+  editMode
 });
 
 //thunkx
-export let sendMessage = (message, formName) => dispatch => {
-  dispatch(sendMessageAction(message));
-  dispatch(reset(formName));
+
+export let sendMessage = (userId, message, formName) => dispatch => {
+  DialogsAPI.sendMessage(userId, message).then(response => {
+    console.log(response);
+    if (response.data.resultCode === 0) {
+      dispatch(sendMessageSuccess(response.data.data.message));
+      dispatch(reset(formName));
+    }
+  });
+};
+
+export let getDialogs = () => dispatch => {
+  dispatch(setLoadingDialogs(true));
+  return DialogsAPI.getDialogs().then(response => {
+    dispatch(setDialogs(response.data));
+    dispatch(setLoadingDialogs(false));
+    return response;
+  });
+};
+
+export let checkNewMessages = () => (dispatch, getState) => {
+  const newMessagesCount = getState().dialogsPage.newMessagesCount;
+  const check = () => {
+    DialogsAPI.checkNewMessages().then(response => {
+      if (response.data && newMessagesCount != response.data) {
+        dispatch(setNewMessagesCount(response.data));
+      }
+    });
+  };
+  setInterval(check, 3000);
+};
+
+export let checkEditMode = (dispatch, getState) => (dispatch, getState) => {
+  const selectedCount = getState().dialogsPage.selectedMessages.length;
+  const isAnySelected = selectedCount > 0;
+  const editMode = {
+    status: isAnySelected,
+    count: selectedCount
+  };
+  dispatch(setEditMode(editMode));
+};
+
+export let selectMessage = messageId => dispatch => {
+  const message = {
+    id: messageId
+  };
+  dispatch(addToSelectedMessages(message));
+};
+
+export let deselectMessage = messageId => dispatch => {
+  dispatch(removeFromSelectedMessages(messageId));
+};
+
+export let cancelSelectMessages = () => (dispatch, getState) => {
+  dispatch(clearSelectedMessages());
+  dispatch(checkEditMode(dispatch, getState));
+};
+
+export let getMessages = userId => dispatch => {
+  dispatch(setLoadingMessages(true));
+  DialogsAPI.getMessages(userId).then(response => {
+    dispatch(setMessages(response.data));
+    dispatch(setLoadingMessages(false));
+  });
+};
+
+export let deleteSelectedMessages = () => (dispatch, getState) => {
+  const selectedMessages = getState().dialogsPage.selectedMessages;
+  selectedMessages.map(mes => {
+    DialogsAPI.deleteMessage(mes.id).then(response => {
+      dispatch(deleteMessage(mes.id));
+      dispatch(deselectMessage(mes.id));
+      dispatch(checkEditMode(dispatch, getState));
+    });
+  });
+};
+
+export let setDialog = dialog => dispatch => {
+  dispatch(cancelSelectMessages());
+  dispatch(selectDialog(dialog));
+  dispatch(getMessages(dialog));
 };
 
 export default dialogsReducer;

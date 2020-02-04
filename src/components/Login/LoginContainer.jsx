@@ -23,7 +23,8 @@ class LoginContainer extends React.Component {
 let mapStateToProps = state => ({
   username: state.auth.login,
   isLogged: state.auth.isLogged,
-  loading: state.profilePage.loading
+  loading: state.profilePage.loading,
+  captchaUrl: state.auth.captchaUrl
 });
 
 export default connect(mapStateToProps, { loginMe })(LoginContainer);

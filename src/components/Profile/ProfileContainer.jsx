@@ -6,8 +6,10 @@ import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import {
   followProfile,
   setProfileData,
+  setProfileStatus,
   unfollowProfile,
   updateProfileAvatar,
+  updateProfileData,
   updateProfileStatus,
   getFollowUser
 } from "../../redux/profileReducer";
@@ -18,31 +20,41 @@ import s from "./profile.module.scss";
 const ProfileContainer = props => {
   const [userId, setUserId] = useState(props.match.params.userId || props.myId);
   const [loaded, setLoaded] = useState(false);
-  const [selfPage, setSelfPage] = useState(true);
+  const [isOwner, setOwner] = useState(false);
 
-  const setProfileDataAfterReceiving = () => {
-    if (userId && !loaded) {
+  const setProfileDataFlow = () => {
+    if (userId) {
       props.setProfileData(userId, props.isFollowed);
+      props.setProfileStatus(userId);
       props.getFollowUser(userId);
+
+      if (userId === props.myId) {
+        setOwner(true);
+      }
       setLoaded(true);
+      console.log("setted");
     }
   };
 
   useEffect(() => {
-    setProfileDataAfterReceiving();
-    setUserId(props.match.params.userId || props.myId);
-
-    if (props.match.params.userId) {
-      setSelfPage(false);
+    if (!loaded) {
+      setProfileDataFlow();
     }
+    setUserId(props.match.params.userId || props.myId);
   }, [props]);
+
+  useEffect(() => {
+    if (loaded) {
+      setProfileDataFlow();
+    }
+  }, [userId]);
 
   if (!loaded) {
     return <Preloader />;
   } else {
     return (
       <div className={s.content}>
-        <Profile {...props} selfPage={selfPage} />
+        <Profile {...props} isOwner={isOwner} />
       </div>
     );
   }
@@ -61,10 +73,12 @@ let mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps, {
     setProfileData,
+    setProfileStatus,
     getFollowUser,
     followProfile,
     unfollowProfile,
     updateProfileStatus,
+    updateProfileData,
     updateProfileAvatar
   }),
   withRouter,

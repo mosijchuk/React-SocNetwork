@@ -1,6 +1,4 @@
-import {
-  UsersAPI
-} from "../API/api";
+import { UsersAPI } from "../API/api";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -8,13 +6,15 @@ const SET_USERS = "SET_USERS";
 const SET_CURRENT_USERS_PAGE = "SET_CURRENT_USERS_PAGE";
 const SET_TOTAL_COUNT = "SET_TOTAL_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
+const TOGGLE_IS_FOLLOWING = "TOGGLE_IS_FOLLOWING";
 
 let initialState = {
   users: [],
   totalCount: 0,
   perPage: 5,
   currentPage: 1,
-  isFetching: true
+  isFetching: true,
+  isFollowing: false
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -65,6 +65,11 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         isFetching: action.isFetching
       };
+    case TOGGLE_IS_FOLLOWING:
+      return {
+        ...state,
+        isFollowing: action.isFollowing
+      };
     default: {
       return state;
     }
@@ -95,6 +100,10 @@ export let toggleIsFetching = isFetching => ({
   type: TOGGLE_IS_FETCHING,
   isFetching
 });
+export let toggleIsFollowing = isFollowing => ({
+  type: TOGGLE_IS_FOLLOWING,
+  isFollowing
+});
 
 //thunks
 export const getUsers = (perPage, page) => {
@@ -112,26 +121,26 @@ export const getUsers = (perPage, page) => {
 
 export const follow = userid => {
   return dispatch => {
-    dispatch(toggleIsFetching(true));
+    dispatch(toggleIsFollowing(true));
 
     UsersAPI.followUser(userid).then(data => {
       if (data.resultCode === 0) {
         dispatch(followSuccess(userid));
       }
-      dispatch(toggleIsFetching(false));
+      dispatch(toggleIsFollowing(false));
     });
   };
 };
 
 export const unfollow = userid => {
   return dispatch => {
-    dispatch(toggleIsFetching(true));
+    dispatch(toggleIsFollowing(true));
 
     UsersAPI.unfollowUser(userid).then(data => {
       if (data.resultCode === 0) {
         dispatch(unfollowSuccess(userid));
       }
-      dispatch(toggleIsFetching(false));
+      dispatch(toggleIsFollowing(false));
     });
   };
 };

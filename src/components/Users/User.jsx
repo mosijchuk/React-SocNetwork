@@ -2,6 +2,7 @@ import React from "react";
 import s from "./Users.module.scss";
 import userPhoto from "../../assets/img/user.jpg";
 import { NavLink } from "react-router-dom";
+import Preloader from "../common/Preloader/Preloader";
 
 let User = ({ u, follow, unfollow, ...props }) => {
   return (
@@ -30,23 +31,22 @@ let User = ({ u, follow, unfollow, ...props }) => {
             }}
           >
             Unfollow
-                  </a>
+          </a>
         ) : (
-            <a
-              href="#"
-              className={s.btn_b}
-              onClick={e => {
-                e.preventDefault();
-                follow(u.id);
-              }}
-            >
-              Follow
-                  </a>
-          )}
+          <a
+            href="#"
+            className={s.btn_b}
+            onClick={e => {
+              e.preventDefault();
+              follow(u.id);
+            }}
+          >
+            Follow
+          </a>
+        )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default User
-
+export default User;

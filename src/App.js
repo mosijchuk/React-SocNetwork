@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./components/scss/App.scss";
 import s from "./components/scss/components.module.scss";
 import Nav from "./components/Navbar/Nav";
@@ -8,12 +8,14 @@ import Nav from "./components/Navbar/Nav";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import LoginContainer from "./components/Login/LoginContainer";
-import { compose } from "../../../../../../Users/aleksandr/Library/Caches/typescript/3.6/node_modules/redux";
+import { compose } from "redux";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import Preloader from "./components/common/Preloader/Preloader";
 import { initializeApp } from "./redux/appReducer";
 import { withSuspense } from "./hoc/withSuspense";
+import NotFound404 from "./components/404/404";
+import NavContainer from "./components/Navbar/NavContainer";
 
 const DialogsContainer = React.lazy(() =>
   import("./components/Dialogs/DialogsContainer")
@@ -28,22 +30,33 @@ class App extends React.Component {
   }
   render() {
     if (!this.props.initialized) {
-      return <Preloader />;
+      return <Preloader center={true} />;
     }
     return (
       <div className="app_wrapper">
         <HeaderContainer />
         <div className={s.container}>
           <div className={s.page_wrap}>
-            <Nav />
+            <NavContainer />
             <div className="content">
-              <Route
-                path="/profile/:userId?"
-                render={() => <ProfileContainer />}
-              />
-              <Route path="/dialogs" render={withSuspense(DialogsContainer)} />
-              <Route path="/users" render={withSuspense(UsersContainer)} />
-              <Route path="/login" render={() => <LoginContainer />} />
+              <Switch>
+                <Route
+                  path="/profile/:userId?"
+                  render={() => <ProfileContainer />}
+                />
+                <Route
+                  exact
+                  path="/"
+                  render={() => <Redirect to="/profile" />}
+                />
+                <Route
+                  path="/dialogs/:dialogId?"
+                  render={withSuspense(DialogsContainer)}
+                />
+                <Route path="/users" render={withSuspense(UsersContainer)} />
+                <Route exact path="/login" render={() => <LoginContainer />} />
+                <Route path="*" render={() => <NotFound404 />} />
+              </Switch>
             </div>
           </div>
         </div>
@@ -56,10 +69,6 @@ let mapStateToProps = state => {
   return {
     initialized: state.app.initialized
   };
-};
-
-let mapDispatchToProps = dispatch => {
-  return {};
 };
 
 export default compose(

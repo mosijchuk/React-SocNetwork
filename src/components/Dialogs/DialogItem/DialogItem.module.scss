@@ -16,6 +16,14 @@
     cursor: pointer;
   }
 
+  &.hasNewMessages {
+    background-color: rgba(225, 229, 235, 0.46);
+  }
+
+  &.selected {
+    background-color: rgba(40, 84, 115, 0.11);
+  }
+
   .avatar {
     width: 50px;
     height: 50px;
@@ -23,6 +31,7 @@
     margin-left: 20px;
     margin-right: 20px;
     object-fit: cover;
+    border: 1px solid $g;
   }
 
   .userName {
@@ -37,5 +46,18 @@
     right: 20px;
     font-size: 12px;
     color: $gt;
+  }
+
+  .selectedDialogIcon,
+  .sticker {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      color: $y;
+    }
   }
 }

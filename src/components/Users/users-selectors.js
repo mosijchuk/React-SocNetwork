@@ -28,3 +28,7 @@ export const getCurrentUsersPage = state => {
 export const getUsersIsFetching = state => {
   return state.usersPage.isFetching;
 };
+
+export const getUsersIsFollowing = state => {
+  return state.usersPage.isFollowing;
+};

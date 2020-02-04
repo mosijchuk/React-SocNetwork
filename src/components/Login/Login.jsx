@@ -30,6 +30,20 @@ const LoginForm = props => {
         <Field component={"input"} name={"rememberMe"} type={"checkbox"} />{" "}
         <small>remember me</small>
       </div>
+
+      {props.captchaUrl && (
+        <>
+          <img src={props.captchaUrl} alt="captcha" className={s.captchaUrl} />
+          <Field
+            component={Input}
+            name={"captcha"}
+            type={"text"}
+            placeholder={"Captcha symbols..."}
+            autoComplete={"off"}
+            validate={required}
+          />
+        </>
+      )}
       <button className={s.btn_b}>Login</button>
     </form>
   );
@@ -41,7 +55,12 @@ let LoginReduxForm = reduxForm({
 
 const Login = props => {
   let onSubmit = formData => {
-    props.loginMe(formData.email, formData.password, formData.rememberMe);
+    props.loginMe(
+      formData.email,
+      formData.password,
+      formData.rememberMe,
+      formData.captcha
+    );
   };
 
   return (
@@ -49,7 +68,7 @@ const Login = props => {
       <div className={s.sectionHeader}>
         <h2>Login</h2>
       </div>
-      <LoginReduxForm onSubmit={onSubmit} />
+      <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} />
     </div>
   );
 };

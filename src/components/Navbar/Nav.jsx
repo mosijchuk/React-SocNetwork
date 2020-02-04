@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MaterialIcon, { colorPalette } from "material-icons-react";
 import s from "./Nav.module.scss";
 import { NavLink } from "react-router-dom";
 import NavFriends from "./NavFriends/NavFriends";
 
 const Nav = props => {
+  useEffect(() => {
+    props.checkNewMessages();
+    console.log("check new mesgs call");
+  }, []);
+
   return (
     <nav className={s.nav}>
       <div className={s.nav_item}>
@@ -17,6 +22,9 @@ const Nav = props => {
         <MaterialIcon icon="mail" size={18} />
         <NavLink to="/dialogs" activeClassName={s.active}>
           Messages
+          {props.newMessages > 0 && (
+            <span className={s.sticker}>{props.newMessages}</span>
+          )}
         </NavLink>
       </div>
       <div className={s.nav_item}>
@@ -37,8 +45,6 @@ const Nav = props => {
           Settings
         </NavLink>
       </div>
-
-      {/* <NavFriends store={props.store} /> */}
     </nav>
   );
 };

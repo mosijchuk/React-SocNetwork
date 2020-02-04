@@ -56,6 +56,11 @@ export const ProfileAPI = {
         }
       });
   },
+  updateProfileData(formData) {
+    return instance.put(`profile`, formData).then(response => {
+      return response.data;
+    });
+  },
   updateProfileAvatar(formData) {
     return instance
       .post(`profile/photo`, formData, {
@@ -75,9 +80,9 @@ export const AuthAPI = {
       return response.data;
     });
   },
-  login(email, password, rememberMe) {
+  login(email, password, rememberMe, captcha) {
     return instance
-      .post(`auth/login`, { email, password, rememberMe })
+      .post(`auth/login`, { email, password, rememberMe, captcha })
       .then(response => {
         return response.data;
       });
@@ -86,5 +91,32 @@ export const AuthAPI = {
     return instance.delete(`auth/login`).then(response => {
       return response.data;
     });
+  }
+};
+
+export const SecurityAPI = {
+  getCaptcha() {
+    return instance.get(`security/get-captcha-url`);
+  }
+};
+
+export const DialogsAPI = {
+  getDialogs() {
+    return instance.get(`dialogs`);
+  },
+  createDialog(userId) {
+    return instance.put(`dialogs/${userId}`);
+  },
+  getMessages(userId) {
+    return instance.get(`dialogs/${userId}/messages`);
+  },
+  sendMessage(userId, messageBody) {
+    return instance.post(`dialogs/${userId}/messages`, { body: messageBody });
+  },
+  deleteMessage(messageId) {
+    return instance.delete(`dialogs/messages/${messageId}`);
+  },
+  checkNewMessages() {
+    return instance.get(`dialogs/messages/new/count`);
   }
 };

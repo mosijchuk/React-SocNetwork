@@ -112,6 +112,8 @@
     }
 
     &__items {
+      display: flex;
+      justify-content: space-between;
       margin-top: 25px;
 
       .item {
@@ -125,10 +127,26 @@
           color: $gt;
         }
 
+        small {
+          font-size: 13px;
+        }
+
         a {
           margin: 0;
           color: $yt;
           text-decoration: none;
+        }
+      }
+
+      &Edit {
+        a {
+          font-size: 14px;
+          color: #828282;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

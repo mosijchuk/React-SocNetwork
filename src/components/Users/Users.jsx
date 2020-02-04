@@ -1,12 +1,9 @@
 import React from "react";
 import s from "./Users.module.scss";
 import User from "./User";
+import Preloader from "../common/Preloader/Preloader";
 
 const Users = React.memo(props => {
-  let ffWew = () => {
-    console.log("loaded");
-  };
-
   return (
     <div className={s.content}>
       <div className={s.contentArea}>
@@ -29,16 +26,20 @@ const Users = React.memo(props => {
 
       {props.currentPage !== props.usersPages && (
         <div className={s.showMoreWrap}>
-          <a
-            href="#"
-            className={`${s.btn_b} ${s.selected}`}
-            onClick={e => {
-              e.preventDefault();
-              props.onPageChange(props.currentPage + 1);
-            }}
-          >
-            Load more
-          </a>
+          {props.isFetching ? (
+            <Preloader inner={true} center={true} noBg={true} />
+          ) : (
+            <a
+              href="#"
+              className={`${s.btn_b} ${s.selected}`}
+              onClick={e => {
+                e.preventDefault();
+                props.onPageChange(props.currentPage + 1);
+              }}
+            >
+              Load more
+            </a>
+          )}
         </div>
       )}
     </div>

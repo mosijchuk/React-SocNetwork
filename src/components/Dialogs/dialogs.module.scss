@@ -7,13 +7,22 @@
 .dialogs {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: auto 1.5fr;
   grid-gap: 15px;
   height: 90vh;
+  transition: all 0.5s;
 
   .dialogsList {
+    width: 500px;
     height: 100%;
     overflow: scroll;
+    transition: all 0.5s;
+  }
+
+  &.active {
+    .dialogsList {
+      width: 350px;
+    }
   }
 
   .dialogArea {
@@ -61,6 +70,57 @@
           }
         }
       }
+    }
+  }
+
+  .selectActionWrap {
+    height: 38px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: $g;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.3s;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &.cancelSelect {
+        color: $y;
+      }
+
+      &.deleteSelected {
+        color: $red;
+
+        i {
+          color: $red;
+        }
+      }
+    }
+  }
+
+  .emptyDialog {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    i {
+      color: $gt;
+    }
+
+    p {
+      margin-top: 15px;
+      color: $gt;
     }
   }
 }

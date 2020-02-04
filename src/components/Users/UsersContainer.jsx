@@ -18,7 +18,8 @@ import {
   getUsersPerPage,
   getUsersPagesCount,
   getCurrentUsersPage,
-  getUsersIsFetching
+  getUsersIsFetching,
+  getUsersIsFollowing
 } from "./users-selectors";
 
 class UsersContainer extends React.Component {
@@ -38,7 +39,7 @@ class UsersContainer extends React.Component {
   render() {
     return (
       <>
-        {this.props.isFetching ? <Preloader /> : ""}
+        {this.props.isFollowing && <Preloader />}
         <Users
           users={this.props.users}
           usersCount={this.props.usersCount}
@@ -48,6 +49,8 @@ class UsersContainer extends React.Component {
           unfollow={this.props.unfollow}
           onPageChange={this.onPageChange}
           toggleIsFetching={this.props.toggleIsFetching}
+          isFetching={this.props.isFetching}
+          isFollowing={this.props.isFollowing}
         />
       </>
     );
@@ -61,7 +64,8 @@ let mapStateToProps = state => {
     perPage: getUsersPerPage(state),
     usersPages: getUsersPagesCount(state),
     currentPage: getCurrentUsersPage(state),
-    isFetching: getUsersIsFetching(state)
+    isFetching: getUsersIsFetching(state),
+    isFollowing: getUsersIsFollowing(state)
   };
 };
 
