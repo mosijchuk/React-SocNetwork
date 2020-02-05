@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import {
   sendMessage,
   getDialogs,
+  getMessages,
   setDialog,
   selectMessage,
   deselectMessage,
@@ -22,7 +23,10 @@ let mapStateToProps = state => {
     ownerId: state.auth.userId,
     editMode: state.dialogsPage.editMode,
     isLoadingDialogs: state.dialogsPage.isLoadingDialogs,
-    isLoadingMessages: state.dialogsPage.isLoadingMessages
+    isLoadingMessages: state.dialogsPage.isLoadingMessages,
+    newMessagesCount: state.dialogsPage.newMessagesCount,
+    ownerPhoto: state.dialogsPage.ownerPhoto,
+    companionPhoto: state.dialogsPage.companionPhoto
   };
 };
 
@@ -30,6 +34,7 @@ export default compose(
   connect(mapStateToProps, {
     sendMessage,
     getDialogs,
+    getMessages,
     setDialog,
     selectMessage,
     deselectMessage,

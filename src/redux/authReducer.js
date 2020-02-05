@@ -60,8 +60,7 @@ export let getCaptchaUrl = () => dispatch => {
 export let loginMe = (email, password, rememberMe, captcha) => dispatch => {
   AuthAPI.login(email, password, rememberMe, captcha).then(data => {
     if (data.resultCode === 0) {
-      dispatch(authMe(data.userId));
-      console.log("ID: " + data.userId);
+      dispatch(authMe(data.data.userId));
     } else {
       if (data.resultCode === 10) {
         dispatch(getCaptchaUrl());

@@ -65,6 +65,10 @@ const Dialogs = props => {
     }
   }, [dialogId]);
 
+  useEffect(() => {
+    props.getMessages(dialogId, true);
+  }, [props.newMessagesCount]);
+
   let dialogElements = props.dialogs.map(dialog => (
     <DialogItem
       key={dialog.id}
@@ -83,7 +87,7 @@ const Dialogs = props => {
       key={message.id}
       id={message.id}
       avatar={message.avatar}
-      userId={message.userId}
+      senderId={message.senderId}
       message={message.body}
       date={message.addedAt}
       userType={message.senderId == props.ownerId && "owner"}
@@ -93,6 +97,8 @@ const Dialogs = props => {
       deselectMessage={props.deselectMessage}
       checkEditMode={props.checkEditMode}
       editMode={props.editMode.status}
+      ownerPhoto={props.ownerPhoto}
+      companionPhoto={props.companionPhoto}
     />
   ));
 

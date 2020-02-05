@@ -14,6 +14,8 @@ const IS_LOADING_DIALOGS = "IS_LOADING_DIALOGS";
 const IS_LOADING_MESSAGES = "IS_LOADING_MESSAGES";
 const SET_NEW_MESSAGES_COUNT = "SET_NEW_MESSAGES_COUNT";
 const START_UPDATE_NEW_MESSAGES = "START_UPDATE_NEW_MESSAGES";
+const TO_VIEW_MESSAGE = "TO_VIEW_MESSAGE";
+const SET_USERS_PHOTOS = "SET_USERS_PHOTOS";
 
 let initialState = {
   dialogs: [],
@@ -31,7 +33,9 @@ let initialState = {
   isLoadingDialogs: true,
   isLoadingMessages: true,
   newMessagesCount: 0,
-  startUpdateNewMessages: false
+  startUpdateNewMessages: false,
+  ownerPhoto: null,
+  companionPhoto: null
 };
 const dialogsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -112,6 +116,26 @@ const dialogsReducer = (state = initialState, action) => {
         ...state,
         isLoadingDialogs: action.loading
       };
+    case SET_USERS_PHOTOS:
+      return {
+        ...state,
+        ownerPhoto: action.owner,
+        companionPhoto: action.companion
+      };
+    case TO_VIEW_MESSAGE:
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          items: state.messages.items.filter(mes => {
+            if (mes.senderId != action.ownerId && mes.viewed === false) {
+              mes.viewed = true;
+            }
+            return mes;
+          }),
+          totalCount: state.messages.totalCount - 1
+        }
+      };
     default:
       return state;
   }
@@ -181,20 +205,30 @@ let setEditMode = editMode => ({
   editMode
 });
 
+let setUsersPhotos = (owner, companion) => ({
+  type: SET_USERS_PHOTOS,
+  owner,
+  companion
+});
+
+let toViewMessages = ownerId => ({
+  type: TO_VIEW_MESSAGE,
+  ownerId
+});
+
 //thunkx
 
 export let sendMessage = (userId, message, formName) => dispatch => {
   DialogsAPI.sendMessage(userId, message).then(response => {
-    console.log(response);
     if (response.data.resultCode === 0) {
       dispatch(sendMessageSuccess(response.data.data.message));
+      dispatch(getDialogs());
       dispatch(reset(formName));
     }
   });
 };
 
 export let getDialogs = () => dispatch => {
-  dispatch(setLoadingDialogs(true));
   return DialogsAPI.getDialogs().then(response => {
     dispatch(setDialogs(response.data));
     dispatch(setLoadingDialogs(false));
@@ -216,10 +250,13 @@ export let checkNewMessages = () => (dispatch, getState) => {
 
     if (isLogged) {
       DialogsAPI.checkNewMessages().then(response => {
-        if (response.data && newMessagesCount != response.data) {
+        if (
+          (response.data && newMessagesCount != response.data) ||
+          newMessagesCount > 0
+        ) {
           dispatch(setNewMessagesCount(response.data));
+          dispatch(getDialogs());
         }
-        console.log("New messages: " + response.data);
       });
     } else {
       clearInterval(checker);
@@ -243,6 +280,13 @@ export let checkEditMode = (dispatch, getState) => (dispatch, getState) => {
   dispatch(setEditMode(editMode));
 };
 
+export let updateUsersPhotos = dialogId => (dispatch, getState) => {
+  const ownerId = getState().auth.userId;
+  const ownerPhoto = `https://social-network.samuraijs.com/activecontent/images/users/${ownerId}/user-small.jpg?v=37`;
+  const companionPhoto = `https://social-network.samuraijs.com/activecontent/images/users/${dialogId}/user-small.jpg?v=37`;
+  dispatch(setUsersPhotos(ownerPhoto, companionPhoto));
+};
+
 export let selectMessage = messageId => dispatch => {
   const message = {
     id: messageId
@@ -259,11 +303,20 @@ export let cancelSelectMessages = () => (dispatch, getState) => {
   dispatch(checkEditMode(dispatch, getState));
 };
 
-export let getMessages = userId => dispatch => {
-  dispatch(setLoadingMessages(true));
+export let getMessages = (userId, invisible = false) => (
+  dispatch,
+  getState
+) => {
+  const ownerId = getState().auth.userId;
+  if (!invisible) dispatch(setLoadingMessages(true));
   DialogsAPI.getMessages(userId).then(response => {
     dispatch(setMessages(response.data));
-    dispatch(setLoadingMessages(false));
+
+    setTimeout(() => {
+      dispatch(toViewMessages(ownerId));
+    }, 1000);
+
+    if (!invisible) dispatch(setLoadingMessages(false));
   });
 };
 
@@ -282,6 +335,7 @@ export let setDialog = dialog => dispatch => {
   dispatch(cancelSelectMessages());
   dispatch(selectDialog(dialog));
   dispatch(getMessages(dialog));
+  dispatch(updateUsersPhotos(dialog));
 };
 
 export default dialogsReducer;

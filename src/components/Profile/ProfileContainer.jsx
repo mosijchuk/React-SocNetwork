@@ -32,7 +32,6 @@ const ProfileContainer = props => {
         setOwner(true);
       }
       setLoaded(true);
-      console.log("setted");
     }
   };
 

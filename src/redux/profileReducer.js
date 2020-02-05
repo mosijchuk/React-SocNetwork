@@ -171,7 +171,6 @@ export let updateProfileAvatar = formData => (dispatch, getState) => {
   ProfileAPI.updateProfileAvatar(formData).then(data => {
     if (data.resultCode === 0) {
       dispatch(setProfileAvatar(data.data.photos));
-      console.log(data);
     }
     dispatch(toggleLoading(false));
   });
