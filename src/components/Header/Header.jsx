@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import s from "./header.module.scss";
-import logo from "./../../assets/img/logo.svg";
+// import logo from "./../../assets/img/";
 
 const Header = props => {
   return (
@@ -9,9 +9,7 @@ const Header = props => {
       <div className={s.container}>
         <div className={s.header_wrap}>
           <div className={s.header_wrap__brand}>
-            <a href="#">
-              <img src={logo} alt="ReactNetwork" />
-            </a>
+            <a href="#">{/* <img src={logo} alt="ReactNetwork" /> */}</a>
           </div>
 
           {!props.isLogged ? (
