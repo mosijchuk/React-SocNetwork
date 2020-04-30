@@ -19,7 +19,7 @@ import s from "./profile.module.scss";
 import {AppStateType} from "../../redux/redux-store";
 import {ProfileType} from "../../types/types";
 
-interface MatchParams {
+type MatchParams = {
     userId?: string;
 }
 
@@ -43,7 +43,7 @@ type MapDispatchPropsType = {
 type OwnPropsType = {}
 
 
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType & RouteComponentProps<MatchParams>
+type PropsType = MapStatePropsType & MapDispatchPropsType & RouteComponentProps<MatchParams>
 
 const ProfileContainer: FC<PropsType> = props => {
     const [userId, setUserId] = useState(Number(props.match.params.userId) || props.myId);
@@ -84,7 +84,7 @@ const ProfileContainer: FC<PropsType> = props => {
             <div className={s.content}>
                 <Profile {...props} isOwner={isOwner}/>
             </div>
-        );
+        )
     }
 };
 
@@ -95,8 +95,8 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => {
         myId: state.auth.userId,
         profileStatus: state.profilePage.profileStatus,
         loading: state.profilePage.loading
-    };
-};
+    }
+}
 
 
 export default compose(

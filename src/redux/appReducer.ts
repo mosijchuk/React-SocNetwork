@@ -6,7 +6,7 @@ import {AppStateType} from "./redux-store";
 const SET_INITIALIZED = "SET_INITIALIZED";
 
 export type InitialStateType = {
-    initialized: Boolean;
+    initialized: boolean;
 };
 
 const initialState: InitialStateType = {
@@ -37,7 +37,7 @@ export const initializeSuccess = (): initializeSuccessActionType => ({
 
 //thunks
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
-export let initializeApp = (): ThunkType => async (dispatch) => {
+export const initializeApp = (): ThunkType => async (dispatch) => {
     const promise = dispatch(authMe());
 
     Promise.all([promise]).then(() => {
